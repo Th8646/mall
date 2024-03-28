@@ -21,6 +21,7 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         //System.out.println("RegisterServlet被调用");
     }
 
