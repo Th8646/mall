@@ -1,58 +1,16 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>韩顺平教育-家居网购</title>
-    <base href="http://localhost:8080/jiaju_mall/">
+    <base href="<%=request.getContextPath() + "/"%>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css"/>
-    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(function () {//页面加载完毕执行
-            //绑定点击事件
-            $("#sub-btn").click(function () {
-                // 获取输入的用户名
-                var usernameVal = $("#username").val();
-                // alert("usernameVal=" + usernameVal);
-                // 使用正则表达式进行验证
-                var usernamePattern = /^\w{6,10}$/;
-                //验证
-                if (!(usernamePattern.test(usernameVal))) {
-                    //展示错误提示
-                    $("span[class='errorMsg']").text("用户格式不对，需要6-10字符");
-                    return false;//不提交，返回false
-                }
-                var passwordVal = $("#password").val();
-                var passwordPattern = /^\w{6,10}$/;
-                if (!(passwordPattern.test(passwordVal))) {
-                    //展示错误提示
-                    $("span.errorMsg").text("密码格式不对，需要6-10字符");
-                    return false;//不提交，返回false
-                }
-                //两次密码一致
-                var repwdVal = $("#repwd").val();
-                if (repwdVal != passwordVal) {
-                    $("span.errorMsg").text("输入的两次密码不相同");
-                    return false;
-                }
-                //邮箱验证
-                var emailVal = $("#email").val();
-                var emailPattern = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-                if (!(emailPattern.test(emailVal))) {
-                    $("span.errorMsg").text("电子邮件格式不正确");
-                    return false;
-                }
-                // 提交表单
-                $("span.errorMsg").text("验证通过");
-                return true;
-            })
-        })
-    </script>
-</head>
 
+</head>
 <body>
 <!-- Header Area start  -->
 <div class="header section">
@@ -69,7 +27,21 @@
                     </div>
                 </div>
                 <!-- Header Logo End -->
-
+                <!-- Header Action Start -->
+                <div class="col align-self-center">
+                    <div class="header-actions">
+                        <div class="header-bottom-set dropdown">
+                            <a>欢迎: ${sessionScope.member.username}</a>
+                        </div>
+                        <div class="header-bottom-set dropdown">
+                            <a href="#">订单管理</a>
+                        </div>
+                        <div class="header-bottom-set dropdown">
+                            <a href="memberServlet?action=logout">安全退出</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Header Action End -->
             </div>
         </div>
     </div>
@@ -100,53 +72,10 @@
             <div class="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div class="login-register-wrapper">
                     <div class="login-register-tab-list nav">
-                        <a class="active" data-bs-toggle="tab" href="#lg1">
-                            <h4>会员登录</h4>
+                        <%--走我们的网站首页 页面/文件协调工作过程--%>
+                        <a class="active"  href="index.html">
+                            <h4>登录成功, 返回首页</h4>
                         </a>
-                        <a data-bs-toggle="tab" href="#lg2">
-                            <h4>会员注册</h4>
-                        </a>
-                    </div>
-                    <div class="tab-content">
-                        <div id="lg1" class="tab-pane active">
-                            <div class="login-form-container">
-                                <div class="login-register-form">
-                                    <form action="loginServlet" method="post">
-                                        <input type="text" name="username" placeholder="Username"/>
-                                        <input type="password" name="password" placeholder="Password"/>
-                                        <div class="button-box">
-                                            <div class="login-toggle-btn">
-                                                <input type="checkbox"/>
-                                                <a class="flote-none" href="javascript:void(0)">Remember me</a>
-                                                <a href="#">Forgot Password?</a>
-                                            </div>
-                                            <button type="submit"><span>Login</span></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="lg2" class="tab-pane">
-                            <div class="login-form-container">
-                                <div class="login-register-form">
-                                    <span class="errorMsg"
-                                          style="float: right; font-weight: bold; font-size: 20pt; margin-left: 10px;"></span>
-                                    <form action="registerServlet" method="post">
-                                        <input type="text" id="username" name="username" placeholder="Username"/>
-                                        <input type="password" id="password" name="password"
-                                               placeholder="输入密码"/>
-                                        <input type="password" id="repwd" name="repassword" placeholder="确认密码"/>
-                                        <input name="email" id="email" placeholder="电子邮件" type="email"/>
-                                        <input type="text" id="code" name="code" style="width: 50%" id="code"
-                                               placeholder="验证码"/>　　<img alt=""
-                                                                            src="assets/images/code/code.bmp">
-                                        <div class="button-box">
-                                            <button type="submit" id="sub-btn"><span>会员注册</span></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -173,8 +102,7 @@
                                     <ul class="align-items-center">
                                         <li class="li"><a class="single-link" href="about.html">关于我们</a></li>
                                         <li class="li"><a class="single-link" href="#">交货信息</a></li>
-                                        <li class="li"><a class="single-link" href="privacy-policy.html">隐私与政策</a>
-                                        </li>
+                                        <li class="li"><a class="single-link" href="privacy-policy.html">隐私与政策</a></li>
                                         <li class="li"><a class="single-link" href="#">条款和条件</a></li>
                                         <li class="li"><a class="single-link" href="#">制造</a></li>
                                     </ul>
@@ -193,7 +121,7 @@
                                         <li class="li"><a class="single-link" href="my-account.html">我的账号</a>
                                         </li>
                                         <li class="li"><a class="single-link" href="cart.html">我的购物车</a></li>
-                                        <li class="li"><a class="single-link" href="login.html">登录</a></li>
+                                        <li class="li"><a class="single-link" href="login.jsp">登录</a></li>
                                         <li class="li"><a class="single-link" href="wishlist.html">感兴趣的</a></li>
                                         <li class="li"><a class="single-link" href="checkout.html">结账</a></li>
                                     </ul>

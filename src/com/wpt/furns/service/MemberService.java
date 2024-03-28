@@ -11,5 +11,7 @@ public interface MemberService {
     public boolean registerMember(Member member);
     //判断用户是否存在
     public boolean isExistMember(String username);
+    //根据传入的Member信息，返回数据库中对应的Member对象
+    public Member login(Member member);
 
 }

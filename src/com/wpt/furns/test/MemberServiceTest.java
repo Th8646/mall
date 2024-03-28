@@ -37,4 +37,10 @@ public class MemberServiceTest {
             System.out.println("注册失败");
         }
     }
+    @Test
+    public void login(){
+        Member member = new Member(null, "tom88", "tom", "tom@sohu.com");
+        Member member1 = memberService.login(member);
+        System.out.println(member1);
+    }
 }

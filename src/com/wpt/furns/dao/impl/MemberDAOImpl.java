@@ -29,7 +29,7 @@ public class MemberDAOImpl extends BasicDAO<Member> implements MemberDAO {
     }
 
     @Override
-    public int saveMember(Member member)  {
+    public int saveMember(Member member) {
         String sql = "INSERT INTO `member`(`username`,`password`,`email`) VALUES(?,MD5(?), ?)";
 //        System.out.println(member.getUsername());
 //        System.out.println(member.getPassword());
@@ -37,4 +37,13 @@ public class MemberDAOImpl extends BasicDAO<Member> implements MemberDAO {
         return update(sql, member.getUsername(),
                 member.getPassword(), member.getEmail());
     }
+
+    @Override
+    public Member queryMemberByUsernameAndPassword(String username, String password) {
+        String sql = "SELECT `id`,username,`password`,email FROM member " +
+                "WHERE username =? and `password`=MD5(?)";
+        return querySingle(sql, Member.class, username, password);
+    }
+
+
 }

@@ -42,4 +42,10 @@ public class MemberDAOTest {
             System.out.println("添加失敗");
         }
     }
+
+    @Test
+    public void  queryMemberByUsernameAndPassword(){
+        Member member = memberDAO.queryMemberByUsernameAndPassword("admin", "admin");
+        System.out.println(member);
+    }
 }

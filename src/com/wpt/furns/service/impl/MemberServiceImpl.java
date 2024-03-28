@@ -31,4 +31,12 @@ public class MemberServiceImpl implements MemberService {
         return memberDAO.queryMemberByName(username) == null ? false : true;
 
     }
+
+    @Override
+    public Member login(Member member) {
+        //返回对象
+        return memberDAO.queryMemberByUsernameAndPassword(member.getUsername(),member.getPassword());
+    }
+
+
 }
