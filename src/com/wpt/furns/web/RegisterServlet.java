@@ -45,14 +45,14 @@ public class RegisterServlet extends HttpServlet {
             //System.out.println("注册成功");
             Member member = new Member(null, username, password, email);
             //请求转发
-            if (memberService.registerMember(member)){
-                request.getRequestDispatcher("/views/member/register_ok.html").forward(request,response);
+            if (memberService.registerMember(member)) {
+                request.getRequestDispatcher("/views/member/register_ok.html").forward(request, response);
             }
         } else {
             //返回注册页面
             //System.out.println("用户名" + username + "存在，不可以注册");
             //System.out.println("注册失败");
-            request.getRequestDispatcher("/views/member/login.html").forward(request,response);
+            request.getRequestDispatcher("/views/member/login.jsp").forward(request, response);
 
         }
 

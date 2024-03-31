@@ -35,7 +35,10 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("/views/member/login_ok.jsp").forward(request, response);
             //System.out.println("用户账号密码正确，可以登录");
         } else {
-            request.getRequestDispatcher("/views/member/login.html").forward(request, response);
+            //登录错误信息回显前端  Servlet&&JSP
+            request.setAttribute("msg","用户名或密码错误");
+            request.setAttribute("username",username);
+            request.getRequestDispatcher("/views/member/login.jsp").forward(request, response);
            //System.out.println("null，登录失败");
         }
 

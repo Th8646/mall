@@ -17,15 +17,18 @@ public class Member {
     private String username;
     private String password;
     private String email;
+    private String role;
 
 
     public Member() {//用于反射创建对象
     }
+
     public Member(Integer id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+
     }
 
     public Integer getId() {
@@ -58,5 +61,13 @@ public class Member {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
