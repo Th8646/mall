@@ -1,28 +1,16 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>韩顺平教育-家居网购</title>
-    <base href="<%=request.getContextPath()  +  "/"%>">
+    <base href="<%=request.getContextPath() + "/" %>">
     <!-- 移动端适配 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
-    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("a.deleteCss").click(function () {
-                //获取要删除的家居名
-                var furnName = $(this).parent().parent().find("td:eq(1)").text();
 
-                return confirm("你确定要删除【" + furnName + "】?");
-            })
-
-        })
-    </script>
 </head>
 
 <body>
@@ -44,22 +32,13 @@
                 <!-- Header Action Start -->
                 <div class="col align-self-center">
                     <div class="header-actions">
-                        <div class="header_account_list">
-                            <a href="javascript:void(0)" class="header-action-btn search-btn"><i
-                                    class="icon-magnifier"></i></a>
-                            <div class="dropdown_search">
-                                <form class="action-form" action="#">
-                                    <input class="form-control" placeholder="Enter your search key" type="text">
-                                    <button class="submit" type="submit"><i class="icon-magnifier"></i></button>
-                                </form>
-                            </div>
-                        </div>
+
                         <!-- Single Wedge Start -->
                         <div class="header-bottom-set dropdown">
-                            <a href="#">后台管理</a>
+                            <a href="#">家居管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="views/manage/furn_add.jsp">添加家居</a>
+                            <a href="#">订单管理</a>
                         </div>
                     </div>
                 </div>
@@ -89,10 +68,14 @@
 <!-- Cart Area Start -->
 <div class="cart-main-area pt-100px pb-100px">
     <div class="container">
-        <h3 class="cart-page-title">家居后台管理</h3>
+        <h3 class="cart-page-title">家居后台管理-添加家居</h3>
+        <!--显示数据校验信息-->
+        ${requestScope.msg}
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <form action="#">
+                <form action="manage/furnServlet" method="post">
+                    <%--增加一个隐藏域给action-add--%>
+                    <input type="hidden" name="action" value="add">
                     <div class="table-content table-responsive cart-table-content">
                         <table>
                             <thead>
@@ -107,29 +90,32 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <%--取出后端的查询集合结果furns，集合遍历循环显示--%>
-                            <c:forEach items="${requestScope.furns}" var="furn">
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img class="img-responsive ml-3" src="${furn.imgPath}"
-                                                         alt=""/></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">${furn.name}</a></td>
-                                    <td class="product-name"><a href="#">${furn.maker}</a></td>
-                                    <td class="product-price-cart"><span class="amount">${furn.price}</span></td>
-                                    <td class="product-quantity">
-                                            ${furn.sales}
-                                    </td>
-                                    <td class="product-quantity">
-                                            ${furn.stock}
-                                    </td>
-                                    <td class="product-remove">
-                                        <a href="#"><i class="icon-pencil"></i></a>
-                                        <a class="deleteCss" href="manage/furnServlet?action=del&id=${furn.id}"><i
-                                                class="icon-close"></i></a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                            <tr>
+                                <td class="product-thumbnail">
+                                    <a href="#"><img class="img-responsive ml-3"
+                                                     src="assets/images/product-image/default.jpg"
+                                                     alt=""/></a>
+                                </td>
+                                <td class="product-name"><input name="name" style="width: 60%" type="text"
+                                                                value=""/></td>
+                                <td class="product-name"><input name="maker" style="width: 90%" type="text"
+                                                                value=""/></td>
+                                <td class="product-price-cart"><input name="price" style="width: 90%" type="text"
+                                                                      value=""/></td>
+                                <td class="product-quantity">
+                                    <input name="sales" style="width: 90%" type="text" value=""/>
+                                </td>
+                                <td class="product-quantity">
+                                    <input name="stock" style="width: 90%" type="text" value=""/>
+                                </td>
+                                <td>
+                                    <!--                                    <a href="#"><i class="icon-pencil"></i></a>-->
+                                    <!--                                    <a href="#"><i class="icon-close"></i></a>-->
+                                    <input type="submit"
+                                           style="width: 90%;background-color: silver;border: silver;border-radius: 20%;"
+                                           value="添加家居"/>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

@@ -8,6 +8,7 @@ import com.wpt.furns.service.FurnService;
 import com.wpt.furns.service.impl.FurnServiceImpl;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,5 +29,18 @@ public class FurnServiceTest {
         for (Furn furn : furns) {
             System.out.println(furn);
         }
+    }
+
+    @Test
+    public void add(){
+        Furn furn = new Furn(null, "可爱的沙发--", "蚂蚁家居",
+                new BigDecimal(999.99), 100, 10, "assets/images/product-image/default.jpg");
+        furnService.addFurn(furn);
+    }
+
+    @Test
+    public void del(){
+        int i = furnService.deleteFurnById(44);
+        System.out.println(i);
     }
 }

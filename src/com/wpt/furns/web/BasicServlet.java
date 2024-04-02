@@ -21,21 +21,24 @@ import java.lang.reflect.Method;
  */
 public abstract class BasicServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        //获取隐藏域的action
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        // 获取隐藏域的action
         String action = request.getParameter("action");
-        //System.out.println("action= " + action);
+        // System.out.println("action= " + action);
 
-        //使用反射获取当前对象的方法
-        //this指请求的真实的Servlet
-        //declaredMethod方法对象是当前请求的servlet对应的“action”的方法，该方法对象是变化的，根据用户请求而定
+        // 使用反射获取当前对象的方法
+        // this指请求的真实的Servlet
+        // declaredMethod方法对象是当前请求的servlet对应的“action”的方法，该方法对象是变化的，根据用户请求而定
         try {
             Method declaredMethod = this.getClass().getDeclaredMethod(action,
                     HttpServletRequest.class, HttpServletResponse.class);
-            //  System.out.println("getDeclaredMethod = " + declaredMethod);
-            //使用方法对象进行反射调用
+            // System.out.println("getDeclaredMethod = " + declaredMethod);
+            // 使用方法对象进行反射调用
             declaredMethod.invoke(this, request, response);
+
         } catch (Exception e) {
+
             throw new RuntimeException(e);
         }
     }
