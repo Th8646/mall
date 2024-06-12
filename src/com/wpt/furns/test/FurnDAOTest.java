@@ -38,4 +38,17 @@ public class FurnDAOTest {
         int i = furnDAO.addFurn(furn);
         System.out.println("执行结果是：" + i);
     }
+
+    @Test
+    public void getTotalRow() {
+        System.out.println(furnDAO.getTotalRow());
+    }
+
+    @Test
+    public void getPageItems() {
+        List<Furn> pageItems = furnDAO.getPageItems(0, 3);
+        for (Furn pageItem : pageItems) {
+            System.out.println(pageItem);
+        }
+    }
 }

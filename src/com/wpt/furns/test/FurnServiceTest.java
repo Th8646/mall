@@ -4,6 +4,7 @@ package com.wpt.furns.test;/**
  */
 
 import com.wpt.furns.entity.Furn;
+import com.wpt.furns.entity.Page;
 import com.wpt.furns.service.FurnService;
 import com.wpt.furns.service.impl.FurnServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,9 @@ import java.util.List;
 public class FurnServiceTest {
 
     private FurnService furnService = new FurnServiceImpl();
+
     @Test
-    public void queryFurns(){
+    public void queryFurns() {
         List<Furn> furns = furnService.queryFurns();
         for (Furn furn : furns) {
             System.out.println(furn);
@@ -32,15 +34,34 @@ public class FurnServiceTest {
     }
 
     @Test
-    public void add(){
-        Furn furn = new Furn(null, "可爱的沙发--", "蚂蚁家居",
+    public void add() {
+        Furn furn = new Furn(3, "可爱的沙发--", "蚂蚁家居",
                 new BigDecimal(999.99), 100, 10, "assets/images/product-image/default.jpg");
         furnService.addFurn(furn);
     }
 
     @Test
-    public void del(){
+    public void del() {
         int i = furnService.deleteFurnById(44);
         System.out.println(i);
+    }
+
+    @Test
+    public void queryFurnById() {
+        Furn furn = furnService.queryFurnById(99);
+        System.out.println(furn);
+    }
+
+    @Test
+    public void updateFurn() {
+        Furn furn = new Furn(3, "可爱的沙发", "蚂蚁家居",
+                new BigDecimal(999.99), 100, 10, "assets/images/product-image/default.jpg");
+        System.out.println(furnService.updateFurn(furn));
+    }
+
+    @Test
+    public void page() {
+        Page<Furn> page = furnService.page(1, 3);
+        System.out.println("page = " + page);
     }
 }

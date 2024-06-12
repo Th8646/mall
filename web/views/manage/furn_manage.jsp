@@ -59,7 +59,7 @@
                             <a href="#">后台管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="views/manage/furn_add.jsp">添加家居</a>
+                            <a href="views/manage/furn_add.jsp?pageNo=${requestScope.page.pageNo}">添加家居</a>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                             </thead>
                             <tbody>
                             <%--取出后端的查询集合结果furns，集合遍历循环显示--%>
-                            <c:forEach items="${requestScope.furns}" var="furn">
+                            <c:forEach items="${requestScope.page.items}" var="furn">
                                 <tr>
                                     <td class="product-thumbnail">
                                         <a href="#"><img class="img-responsive ml-3" src="${furn.imgPath}"
@@ -124,8 +124,10 @@
                                             ${furn.stock}
                                     </td>
                                     <td class="product-remove">
-                                        <a href="#"><i class="icon-pencil"></i></a>
-                                        <a class="deleteCss" href="manage/furnServlet?action=del&id=${furn.id}"><i
+                                        <a href="manage/furnServlet?action=showFurn&id=${furn.id}&pageNo=${requestScope.page.pageNo}"><i
+                                                class="icon-pencil"></i></a>
+                                        <a class="deleteCss"
+                                           href="manage/furnServlet?action=del&id=${furn.id}&pageNo=${requestScope.page.pageNo}"><i
                                                 class="icon-close"></i></a>
                                     </td>
                                 </tr>
@@ -135,6 +137,43 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <%--            分页导航条开始--%>
+        <div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
+            <ul>
+                <li><a href="manage/furnServlet?action=page&pageNo=1">首页</a></li>
+                <%--                需要判断当前页大于1才有上一页--%>
+                <c:if test="${requestScope.page.pageNo > 1}">
+                    <li><a href="manage/furnServlet?action=page&pageNo=${requestScope.page.pageNo-1}">上页</a></li>
+                </c:if>
+                <%--                                显示所有分页数--%>
+                <%--                先确定开始页数 begin 第 1 页--%>
+                <%--                在确定结束页数 end   第 pageTotalCount 页
+                                    最多显示五页--%>
+                <c:set var="begin" value="1"></c:set>
+                <c:set var="end" value="${requestScope.page.pageTotalCount}"></c:set>
+                <c:forEach begin="${begin}" end="${end}" var="i">
+                    <%--                    如果i是当前页，就使用active修饰--%>
+                    <c:if test="${i == requestScope.page.pageNo}">
+                        <li><a class="active" href="manage/furnServlet?action=page&pageNo=${i}">${i}</a></li>
+                    </c:if>
+                    <c:if test="${i != requestScope.page.pageNo}">
+                        <li><a href="manage/furnServlet?action=page&pageNo=${i}">${i}</a></li>
+                    </c:if>
+                </c:forEach>
+                <%--                <li><a class="active" href="#">3</a></li>--%>
+                <%--                <li><a href="#">4</a></li>--%>
+                <%--                <li><a href="#">5</a></li>--%>
+                <%--                需要判断当前页小于总页数才有下一页--%>
+                <c:if test="${requestScope.page.pageNo < requestScope.page.pageTotalCount}">
+                    <li><a href="manage/furnServlet?action=page&pageNo=${requestScope.page.pageNo+1}">下一页</a></li>
+                </c:if>
+                <li>
+                    <a href="manage/furnServlet?action=page&pageNo=${requestScope.page.pageNo = requestScope.page.pageTotalCount}">末页</a>
+                </li>
+                <li><a href="#"> 共 ${requestScope.page.pageTotalCount} 页 </a></li>
+                <li><a href="#"> 共 ${requestScope.page.totalRow} 记录 </a></li>
+            </ul>
         </div>
     </div>
 </div>

@@ -16,8 +16,30 @@ public interface FurnDAO {
 
     /**
      * 根据id删除db中对应的家居
+     *
      * @param id
      * @return 受影响的行数
      */
     public int deleteFurnById(int id);
+
+    public Furn queryFurnById(int id);
+
+    // page的那些属性是可以直接从数据库直接获取的，就把相关任务放在DAO层
+    public int getTotalRow();
+
+    /**
+     * 根据传入的begin和PageSize，返回对应的Page对象
+     * @param begin
+     * @param pageSize
+     * @return
+     */
+    public List<Furn> getPageItems(int begin, int pageSize);
+
+    /**
+     * 将传入的furn对象，更新到数据库，根据id
+     * @param furn
+     * @return
+     */
+    public int updateFurn(Furn furn);
+    // 处理Page模型中可以直接从数据库获取的属性
 }

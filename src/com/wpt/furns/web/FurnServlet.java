@@ -4,6 +4,7 @@ package com.wpt.furns.web;/**
  */
 
 import com.wpt.furns.entity.Furn;
+import com.wpt.furns.entity.Page;
 import com.wpt.furns.service.FurnService;
 import com.wpt.furns.service.impl.FurnServiceImpl;
 import com.wpt.furns.utils.DataUtils;
@@ -93,17 +94,77 @@ public class FurnServlet extends BasicServlet {
         furnService.addFurn(furn);
         // 显示更新家居列表业,重新调用list方法
         // 重定向实际是浏览器发送第二次请求，可以避免因为刷新造成了数据重复提交
-        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=list");
+//        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=list");
+        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=page&pageNo=" + request.getParameter("pageNo"));
 //        request.getRequestDispatcher("/manage/furnServlet?action=list").forward(request,response);
+
     }
 
     protected void del(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // 防止接收的id不是数字字符串，例如hello等
-        // 使用DataUtils.parseInt进行转换，可以转数字字符串就转，否则返回默认值0
+        // 使用DataUtils.paKrseInt进行转换，可以转数字字符串就转，否则返回默认值0
         int id = DataUtils.parseInt(request.getParameter("id"), 0);
         furnService.deleteFurnById(id);
         // 重定向到家居列表页
-        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=list");
+//        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=list");
+        response.sendRedirect(request.getContextPath()
+                + "/manage/furnServlet?action=page&pageNo="
+                + request.getParameter("pageNo"));
+
+
+    }
+
+    /**
+     * 处理回显家居信息的请求
+     *
+     * @param request
+     * @param response
+     */
+    protected void showFurn(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = DataUtils.parseInt(request.getParameter("id"), 0);
+        Furn furn = furnService.queryFurnById(id);
+        // System.out.println(furn);
+        // 放入request域
+        request.setAttribute("furn", furn);
+        // 请求转发到furn_update.jsp
+        // 在请求转发页面 furn_update.jsp 通过param隐藏域取出 manage_furn.jsp中传入request请求的pageNo参数
+        request.getRequestDispatcher("/views/manage/furn_update.jsp").forward(request, response);
+    }
+
+
+    protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 将提交修改的家居信息封装成Furn对象
+        Furn furn = DataUtils.copyParamToBean(request.getParameterMap(), new Furn());
+        System.out.println("Furn=" + furn);
+        furnService.updateFurn(furn);
+        // 重定向
+        // 考虑分页，带上pageNo至分页显示中的当前页
+//        response.sendRedirect(request.getContextPath() + "/manage/furnServlet?action=list");
+        response.sendRedirect(request.getContextPath() +
+                "/manage/furnServlet?action=page&pageNo="
+                + request.getParameter("pageNo"));
+    }
+
+    /**
+     * 处理分页显示请求
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void page(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //1.获取参数
+        int pageNo = DataUtils.parseInt(request.getParameter("pageNo"), 1);
+        int pageSize = DataUtils.parseInt(request.getParameter("pageSize"), Page.PAGE_SIZE);
+        //2.调用service方获取page对象
+        Page<Furn> page = furnService.page(pageNo, pageSize);
+        //3.将page放入request域
+        request.setAttribute("page", page);
+        //4.请求转发到furn_manage.jsp
+        request.getRequestDispatcher("/views/manage/furn_manage.jsp").forward(request, response);
+
 
     }
 }

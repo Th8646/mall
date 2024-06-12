@@ -1,6 +1,7 @@
 package com.wpt.furns.service;
 
 import com.wpt.furns.entity.Furn;
+import com.wpt.furns.entity.Page;
 
 import java.util.List;
 
@@ -12,5 +13,24 @@ public interface FurnService {
     public List<Furn> queryFurns();
 
     public int addFurn(Furn furn);
+
     public int deleteFurnById(int id);
+
+    public Furn queryFurnById(int id);
+
+    /**
+     * 根据传入的Furn对象进行修改
+     *
+     * @param furn
+     * @return
+     */
+    public int updateFurn(Furn furn);
+
+    /**
+     * 根据传入的begin 和 pageSize返回对应的Page对象
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public Page<Furn> page(int pageNo, int pageSize);
 }
