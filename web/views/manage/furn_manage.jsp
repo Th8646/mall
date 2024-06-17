@@ -239,7 +239,8 @@
                 <div class="row flex-sm-row-reverse">
                     <div class="col-md-6 text-right">
                         <div class="payment-link">
-                            <img src="#" alt="">
+<%--                            <img src="#" alt="">--%>
+<%--                            <img src="#" alt="">会请求当前页url  http://localhost:8080/jiaju_mall/# --%>
                         </div>
                     </div>
                     <div class="col-md-6 text-left">

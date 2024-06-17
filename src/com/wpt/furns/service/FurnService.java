@@ -33,4 +33,13 @@ public interface FurnService {
      * @return
      */
     public Page<Furn> page(int pageNo, int pageSize);
+
+    /**
+     * 根据传入的 pageNo 和 pageSize/name返回对应的Page对象
+     * @param pageNo
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    public Page<Furn> pageByName(int pageNo, int pageSize,String name);
 }

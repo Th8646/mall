@@ -64,4 +64,11 @@ public class FurnServiceTest {
         Page<Furn> page = furnService.page(1, 3);
         System.out.println("page = " + page);
     }
+
+    @Test
+    public void pageByName(){
+        Page<Furn> furns = furnService.pageByName(2, 3, "沙发");
+        System.out.println(furns);
+    }
+
 }

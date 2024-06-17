@@ -42,4 +42,15 @@ public interface FurnDAO {
      */
     public int updateFurn(Furn furn);
     // 处理Page模型中可以直接从数据库获取的属性
+
+    public int  getTotalRowByName(String name);
+
+    /**
+     * 根据begin，pageSize和名字获取要显示的家居信息
+     * @param begin
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    public List<Furn> getPageItemsByName(int begin, int pageSize,String name);
 }

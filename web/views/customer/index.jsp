@@ -37,8 +37,9 @@
                             <a href="javascript:void(0)" class="header-action-btn search-btn"><i
                                     class="icon-magnifier"></i></a>
                             <div class="dropdown_search">
-                                <form class="action-form" action="#">
-                                    <input class="form-control" placeholder="Enter your search key" type="text">
+                                <form class="action-form" action="customerFurnServlet">
+                                    <input type="hidden" name="action" value="pageByName">
+                                    <input class="form-control" name="name" placeholder="请输入家具名搜索" type="text">
                                     <button class="submit" type="submit"><i class="icon-magnifier"></i></button>
                                 </form>
                             </div>
@@ -173,10 +174,11 @@
 <%--</div>--%>
 <div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
     <ul>
-        <li><a href="customerFurnServlet?action=page&pageNo=1">首页</a></li>
+        <li><a href="${requestScope.page.url}&pageNo=1">首页</a></li>
         <%--                需要判断当前页大于1才有上一页--%>
         <c:if test="${requestScope.page.pageNo > 1}">
-            <li><a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo-1}">上页</a></li>
+<%--            <li><a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo-1}">上页</a></li>--%>
+            <li><a href="${requestScope.page.url}&pageNo=${requestScope.page.pageNo-1}">上页</a></li>
         </c:if>
         <%--                                显示所有分页数--%>
         <%--                先确定开始页数 begin 第 1 页--%>
@@ -187,10 +189,10 @@
         <c:forEach begin="${begin}" end="${end}" var="i">
             <%--                    如果i是当前页，就使用active修饰--%>
             <c:if test="${i == requestScope.page.pageNo}">
-                <li><a class="active" href="customerFurnServlet?action=page&pageNo=${i}">${i}</a></li>
+                <li><a class="active" href="${requestScope.page.url}&pageNo=${i}">${i}</a></li>
             </c:if>
             <c:if test="${i != requestScope.page.pageNo}">
-                <li><a href="customerFurnServlet?action=page&pageNo=${i}">${i}</a></li>
+                <li><a href="${requestScope.page.url}&pageNo=${i}">${i}</a></li>
             </c:if>
         </c:forEach>
         <%--                <li><a class="active" href="#">3</a></li>--%>
@@ -198,10 +200,10 @@
         <%--                <li><a href="#">5</a></li>--%>
         <%--                需要判断当前页小于总页数才有下一页--%>
         <c:if test="${requestScope.page.pageNo < requestScope.page.pageTotalCount}">
-            <li><a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo+1}">下一页</a></li>
+            <li><a href="${requestScope.page.url}&pageNo=${requestScope.page.pageNo+1}">下一页</a></li>
         </c:if>
         <li>
-            <a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo = requestScope.page.pageTotalCount}">末页</a>
+            <a href="${requestScope.page.url}&pageNo=${requestScope.page.pageNo = requestScope.page.pageTotalCount}">末页</a>
         </li>
         <li><a href="#"> 共 ${requestScope.page.pageTotalCount} 页 </a></li>
         <li><a href="#"> 共 ${requestScope.page.totalRow} 记录 </a></li>

@@ -51,4 +51,14 @@ public class FurnDAOTest {
             System.out.println(pageItem);
         }
     }
+    @Test
+    public void getTotalRowByName(){
+        System.out.println(furnDAO.getTotalRowByName("沙发"));
+    }
+
+    @Test
+    public void getPageItemsByName(){
+        List<Furn> furns = furnDAO.getPageItemsByName(0, 3, "沙发");
+        System.out.println(furns);
+    }
 }

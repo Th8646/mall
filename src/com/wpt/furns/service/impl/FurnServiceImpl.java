@@ -84,4 +84,32 @@ public class FurnServiceImpl implements FurnService {
 
     }
 
+    @Override
+    public Page<Furn> pageByName(int pageNo, int pageSize, String name) {
+        //先创建page对象，根据实际情况填充属性
+        Page<Furn> page = new Page<>();
+
+        page.setPageNo(pageNo);
+        page.setPageSize(pageSize);
+
+        int totalRow = furnDAO.getTotalRowByName(name);
+        page.setTotalRow(totalRow);
+
+        // pageTotalCount = 数据库总记录数 / pageSize 向上取整
+        int pageTotalCount = totalRow / pageSize;
+        if (totalRow % pageSize > 0) {
+            pageTotalCount += 1;
+        }
+        page.setPageTotalCount(pageTotalCount);
+
+        // 计算数据库查询的起始索引 begin
+        int begin = (pageNo - 1) * pageSize;
+        List<Furn> pageItems = furnDAO.getPageItemsByName(begin, pageSize,name);
+        page.setItems(pageItems);
+
+
+        return page;
+
+    }
+
 }
