@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/memberServlet")
@@ -46,10 +47,12 @@ public class MemberServlet extends BasicServlet {
         //System.out.println("loginServlet被嗲用");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        Member member = memberService.login(new Member(null, username, password, null));
 
-
-        if (memberService.login(new Member(null, username, password, null)) != null) {
+        if (member != null) {
             //请求重定向
+            HttpSession session = request.getSession();
+            session.setAttribute("member", member);
             request.getRequestDispatcher("/views/member/login_ok.jsp").forward(request, response);
             //System.out.println("用户账号密码正确，可以登录");
         } else {

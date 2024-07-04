@@ -57,6 +57,17 @@
                     </div>
                 </div>
                 <!-- Header Logo End -->
+                <div class="header-actions">
+                    <div class="header-bottom-set dropdown">
+                        <a>欢迎: ${sessionScope.member.username}</a>
+                    </div>
+                    <div class="header-bottom-set dropdown">
+                        <a href="#">订单管理</a>
+                    </div>
+                    <div class="header-bottom-set dropdown">
+                        <a href="memberServlet?action=logout">安全退出</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -73,7 +84,7 @@
                 <div class="login-register-wrapper">
                     <div class="login-register-tab-list nav">
                         <%--走我们的网站首页 页面/文件协调工作过程--%>
-                        <a class="active"  href="index.html">
+                        <a class="active"  href="index.jsp">
                             <h4>登录成功, 返回首页</h4>
                         </a>
                     </div>
