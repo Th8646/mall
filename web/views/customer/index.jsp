@@ -11,7 +11,17 @@
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $("button.add-to-cart").click(function () {
+                var furnId = $(this).attr("furnId");
+                location.href = "cartServlet?action=addItem&id=" + furnId;
+            })
 
+
+        })
+    </script>
 </head>
 
 <body>
@@ -45,8 +55,8 @@
                             </div>
                         </div>
                         <!-- Single Wedge Start -->
-<%--                        根据用户登录状态显示不同的菜单   使用session中是否存在member对象判断--%>
-                        <c:if  test="${empty sessionScope.member}">
+                        <%--                        根据用户登录状态显示不同的菜单   使用session中是否存在member对象判断--%>
+                        <c:if test="${empty sessionScope.member}">
                             <div class="header-bottom-set dropdown">
                                 <a href="views/member/login.jsp">登录|注册</a>
                             </div>
@@ -64,10 +74,11 @@
                         </c:if>
 
                         <!-- Single Wedge End -->
-                        <a href="#offcanvas-cart"
-                           class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
+                        <a href="views/cart/cart.jsp"
+                           class="header-action-btn header-action-btn-cart  pr-0">
                             <i class="icon-handbag"> 购物车</i>
-                            <span class="header-action-num">88</span>
+                            <span class="header-action-num">${sessionScope.cart.totalCount}</span>
+                            <%--      从session中取cart，遍历显示      --%>
                         </a>
                         <a href="#offcanvas-mobile-menu"
                            class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">
@@ -118,49 +129,50 @@
                         <div class="row">
                             <c:forEach items="${requestScope.page.items}" var="furn">
 
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6" data-aos="fade-up"
-                                 data-aos-delay="200">
-                                <!-- Single Prodect -->
-                                <div class="product">
-                                    <div class="thumb">
-                                        <a href="shop-left-sidebar.html" class="image">
-                                            <img src="${furn.imgPath}" alt="Product"/>
-                                            <img class="hover-image" src="${furn.imgPath}"
-                                                 alt="Product"/>
-                                        </a>
-                                        <span class="badges">
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6" data-aos="fade-up"
+                                     data-aos-delay="200">
+                                    <!-- Single Prodect -->
+                                    <div class="product">
+                                        <div class="thumb">
+                                            <a href="shop-left-sidebar.html" class="image">
+                                                <img src="${furn.imgPath}" alt="Product"/>
+                                                <img class="hover-image" src="${furn.imgPath}"
+                                                     alt="Product"/>
+                                            </a>
+                                            <span class="badges">
                                                 <span class="new">New</span>
                                             </span>
-                                        <div class="actions">
-                                            <a href="#" class="action wishlist" data-link-action="quickview"
-                                               title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                                    class="icon-size-fullscreen"></i></a>
+                                            <div class="actions">
+                                                <a href="#" class="action wishlist" data-link-action="quickview"
+                                                   title="Quick view" data-bs-toggle="modal"
+                                                   data-bs-target="#exampleModal"><i
+                                                        class="icon-size-fullscreen"></i></a>
+                                            </div>
+                                            <button title="Add To Cart" furnId="${furn.id}" class="add-to-cart">Add To
+                                                Cart
+                                            </button>
                                         </div>
-                                        <button title="Add To Cart" class=" add-to-cart">Add
-                                            To Cart
-                                        </button>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title">
-                                            <a href="shop-left-sidebar.html">${furn.name}</a></h5>
-                                        <span class="price">
+                                        <div class="content">
+                                            <h5 class="title">
+                                                <a href="shop-left-sidebar.html">${furn.name}</a></h5>
+                                            <span class="price">
                                                 <span class="new">${furn.name}</span>
                                             </span>
-                                        <span class="price">
+                                            <span class="price">
                                                 <span class="new">${furn.maker}</span>
                                             </span>
-                                        <span class="price">
+                                            <span class="price">
                                                 <span class="new">￥${furn.price}</span>
                                             </span>
-                                        <span class="price">
+                                            <span class="price">
                                                 <span class="new">${furn.sales}</span>
                                             </span>
-                                        <span class="price">
+                                            <span class="price">
                                                 <span class="new">${furn.stock}</span>
                                             </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </c:forEach>
                         </div>
                     </div>
@@ -189,7 +201,7 @@
         <li><a href="${requestScope.page.url}&pageNo=1">首页</a></li>
         <%--                需要判断当前页大于1才有上一页--%>
         <c:if test="${requestScope.page.pageNo > 1}">
-<%--            <li><a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo-1}">上页</a></li>--%>
+            <%--            <li><a href="customerFurnServlet?action=page&pageNo=${requestScope.page.pageNo-1}">上页</a></li>--%>
             <li><a href="${requestScope.page.url}&pageNo=${requestScope.page.pageNo-1}">上页</a></li>
         </c:if>
         <%--                                显示所有分页数--%>
@@ -317,9 +329,9 @@
                     </div>
                 </div>
             </div>
-            </div>
         </div>
     </div>
+</div>
 </div>
 <!-- Footer Area End -->
 
