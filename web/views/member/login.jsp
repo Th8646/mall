@@ -12,6 +12,9 @@
     <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(function () {//页面加载完毕执行
+            $("#codeImg").click(function () {
+                this.src = "<%=request.getContextPath()%>/katchaServlet?d=" + new Date();
+            })
             //绑定点击事件
             $("#sub-btn").click(function () {
                 // 获取输入的用户名
@@ -44,6 +47,14 @@
                 if (!(emailPattern.test(emailVal))) {
                     $("span.errorMsg").text("电子邮件格式不正确");
                     return false;
+                }
+                //验证码
+                var codeText = $("#code").val();
+                //去掉空格
+                codeText = $.trim(codeText);
+                if (codeText == null || codeText == "") {
+                    $("span.errorMsg").text("验证码不能为空");
+                    return  false;
                 }
                 // 提交表单
                 $("span.errorMsg").text("验证通过");
@@ -113,11 +124,12 @@
                                 <div class="login-register-form">
                                     <%--                                    错误提示信息--%>
                                     <span style="font-size: 18pt;font-weight: bold;float: right;color: gainsboro">
-                                    ${requestScope.msg}
+                                        ${requestScope.msg}
                                     </span>
                                     <form action="memberServlet" method="post">
                                         <input type="hidden" name="action" value="login"/>
-                                        <input type="text" name="username" value="${requestScope.username}" placeholder="Username"/>
+                                        <input type="text" name="username" value="${requestScope.username}"
+                                               placeholder="Username"/>
                                         <input type="password" name="password" placeholder="Password"/>
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
@@ -138,14 +150,14 @@
                                           style="float: right; font-weight: bold; font-size: 20pt; margin-left: 10px;"></span>
                                     <form action="memberServlet" method="post">
                                         <input type="hidden" name="action" value="register"/>
-                                        <input type="text" id="username" name="username" placeholder="Username"/>
+                                        <input type="text" id="username" name="username" placeholder="Username" value="${requestScope.username}"/>
                                         <input type="password" id="password" name="password"
                                                placeholder="输入密码"/>
                                         <input type="password" id="repwd" name="repassword" placeholder="确认密码"/>
-                                        <input name="email" id="email" placeholder="电子邮件" type="email"/>
+                                        <input name="email" id="email" placeholder="电子邮件" type="email" value="${requestScope.email}"/>
                                         <input type="text" id="code" name="code" style="width: 50%" id="code"
-                                               placeholder="验证码"/>　　<img alt=""
-                                                                            src="assets/images/code/code.bmp">
+                                               placeholder="验证码"/>　　<img id="codeImg" alt="" src="katchaServlet"
+                                                                            style="width: 120px;height: 50px">
                                         <div class="button-box">
                                             <button type="submit" id="sub-btn"><span>会员注册</span></button>
                                         </div>

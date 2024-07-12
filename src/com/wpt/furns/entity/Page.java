@@ -15,7 +15,7 @@ import java.util.List;
  * @version: 1.0
  */
 public class Page<T> {// 分页模型对应的数据不确定，使用泛型
-    public static final Integer PAGE_SIZE = 2;
+    public static final Integer PAGE_SIZE = 4;
     private Integer pageNo;              // 显示第几页
     private Integer pageSize = PAGE_SIZE;       // 每页显示几条记录
     private Integer pageTotalCount;    // 共有多少页，需要计算得到

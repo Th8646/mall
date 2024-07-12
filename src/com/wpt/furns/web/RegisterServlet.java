@@ -46,7 +46,7 @@ public class RegisterServlet extends HttpServlet {
             Member member = new Member(null, username, password, email);
             //请求转发
             if (memberService.registerMember(member)) {
-                request.getRequestDispatcher("/views/member/register_ok.html").forward(request, response);
+                request.getRequestDispatcher("/views/member/register_ok.jsp").forward(request, response);
             }
         } else {
             //返回注册页面

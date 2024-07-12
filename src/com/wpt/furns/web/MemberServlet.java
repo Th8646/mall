@@ -3,6 +3,7 @@ package com.wpt.furns.web;/**
  * @date 2024/3/30 16:57
  */
 
+import com.google.code.kaptcha.servlet.KaptchaServlet;
 import com.wpt.furns.entity.Member;
 import com.wpt.furns.service.MemberService;
 import com.wpt.furns.service.impl.MemberServiceImpl;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 @WebServlet("/memberServlet")
 public class MemberServlet extends BasicServlet {
@@ -71,24 +74,47 @@ public class MemberServlet extends BasicServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
+        // 获取用户提交的验证码
+        String code = request.getParameter("code");
+        // 从session中获取验证码
+        String token = (String) request.getSession().getAttribute(KAPTCHA_SESSION_KEY);
+        // 立即删除session验证码，防止验证码被重复使用
+        request.getSession().removeAttribute(KAPTCHA_SESSION_KEY);
+        // 如果token不为空，且和用户提交的验证码一致
+        if (token != null && token.equalsIgnoreCase(code)) {
+            //判断用户名是否可用
+            if (!(memberService.isExistMember(username))) {
+                //注册
+                //System.out.println("用户名" + username + "不存在，可以注册");
+                //System.out.println("注册成功");
+                Member member = new Member(null, username, password, email);
+                //请求转发
+                if (memberService.registerMember(member)) {
+                    request.getRequestDispatcher("/views/member/register_ok.jsp").forward(request, response);
+                }
+            } else {
+                //返回注册页面
+                //System.out.println("用户名" + username + "存在，不可以注册");
+                //System.out.println("注册失败");
+                request.getRequestDispatcher("/views/member/login.jsp").forward(request, response);
 
-        //判断用户名是否可用
-        if (!(memberService.isExistMember(username))) {
-            //注册
-            //System.out.println("用户名" + username + "不存在，可以注册");
-            //System.out.println("注册成功");
-            Member member = new Member(null, username, password, email);
-            //请求转发
-            if (memberService.registerMember(member)) {
-                request.getRequestDispatcher("/views/member/register_ok.html").forward(request, response);
             }
-        } else {
-            //返回注册页面
-            //System.out.println("用户名" + username + "存在，不可以注册");
-            //System.out.println("注册失败");
+        } else {//验证码不正确
+            request.setAttribute("msg","验证码不正确");
+            // 前端回显数据
+            request.setAttribute("username",username);
+            request.setAttribute("email",email);
             request.getRequestDispatcher("/views/member/login.jsp").forward(request, response);
-
         }
+
+
+    }
+
+    protected void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //销毁当前用户的session
+        request.getSession().invalidate();
+        //重定向到首页   request.getContextPath()====>http://localhost:8080/jiaju_mall
+        response.sendRedirect(request.getContextPath());
 
     }
 }
