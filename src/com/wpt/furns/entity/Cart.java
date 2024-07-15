@@ -22,6 +22,19 @@ public class Cart {
     private HashMap<Integer, CartItem> items = new HashMap<>();
     // 购物车商品的总数量
 
+    /**
+     * @return 所有购物车的商品总价
+     */
+    public BigDecimal getCartTotalPrice() {
+        BigDecimal cartTotalPrice = new BigDecimal(0);
+        //便利Items
+        Set<Integer> keys = items.keySet();
+        for (Integer id : keys) {
+            CartItem item = items.get(id);
+            cartTotalPrice = cartTotalPrice.add(item.getTotalPrice());
+        }
+        return cartTotalPrice;
+    }
 
     public HashMap<Integer, CartItem> getItems() {
         return items;
@@ -35,13 +48,11 @@ public class Cart {
         int totalCount = 0;
         // 遍历HashMap
         Set<Integer> keys = items.keySet();
-        for (int id : keys) {
+        for (Integer id : keys) {
             totalCount += ((CartItem) items.get(id)).getCount();
         }
         return totalCount;
     }
-
-
 
 
     // 添加家居到cart
@@ -51,8 +62,36 @@ public class Cart {
             items.put(cartItem.getId(), cartItem);
         } else {//购物车中有对应的cartItem，增加count，修改total_price
             item.setCount(item.getCount() + cartItem.getCount());
-            item.setTotal_price(item.getPrice().multiply(new BigDecimal(item.getCount())));
+            item.setTotalPrice(item.getPrice().multiply(new BigDecimal(item.getCount())));
         }
+    }
+
+    public void updateCount(int id, int count) {
+        CartItem item = items.get(id);
+        if (null != item) {
+            //  更新数量
+            item.setCount(count);
+            //  更新当前cartItem总价
+            item.setTotalPrice(item.getPrice().multiply(new BigDecimal(item.getCount())));
+
+        }
+
+
+    }
+
+    /**
+     * 根据传入的id 删除 家居Item
+     * @param id
+     */
+    public void delItem(int id){
+         items.remove(id);
+    }
+
+    /**
+     * 清空购物车
+     */
+    public void clear(){
+        items.clear();
     }
 
 

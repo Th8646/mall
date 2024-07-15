@@ -11,6 +11,52 @@
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css"/>
     <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script>
+
+        $(function () {
+
+            //删除购物车按钮绑定点击事件
+            $("a.delItem").click(function () {
+                //获取需要删除的家具名
+                var furnName = $(this).parent().parent().find("td:eq(1)").text();
+                // alert("furnName=" + furnName);
+                //确认弹窗
+                return confirm("确认要删除【" + furnName + "】?");
+
+            })
+
+            // 清空购物车绑定事件
+            $("a.clearCart").click(function () {
+                return confirm("确认要清空购物车吗?");
+            })
+
+
+            var CartPlusMinus = $(".cart-plus-minus");
+            CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
+            CartPlusMinus.append('<div class="inc qtybutton">+</div>');
+            $(".qtybutton").on("click", function () {
+
+                var $button = $(this);
+                var oldValue = $button.parent().find("input").val();
+                if ($button.text() === "+") {
+                    var newVal = parseFloat(oldValue) + 1;
+                } else {
+                    // Don't allow decrementing below zero
+                    if (oldValue > 1) {
+                        var newVal = parseFloat(oldValue) - 1;
+                    } else {
+                        newVal = 1;
+                    }
+                }
+                $button.parent().find("input").val(newVal);
+                var furnId = $button.parent().find("input").attr("furnId");
+                // alert("furnId=" + furnId);
+                location.href = "cartServlet?action=updateCount&count=" + newVal + "&id=" + furnId;
+            });
+        });
+
+
+    </script>
 </head>
 <body>
 <!-- Header Area start  -->
@@ -32,7 +78,7 @@
                 <div class="col align-self-center">
                     <div class="header-actions">
                         <div class="header-bottom-set dropdown">
-                            <a>欢迎: hello</a>
+                            <a>欢迎:${sessionScope.member.username}</a>
                         </div>
                         <div class="header-bottom-set dropdown">
                             <a href="#">订单管理</a>
@@ -115,50 +161,53 @@
                                                              alt=""/></a>
                                         </td>
                                         <td class="product-name"><a href="#">${entry.value.name}</a></td>
-                                        <td class="product-price-cart"><span class="amount">${entry.value.price}</span></td>
+                                        <td class="product-price-cart"><span class="amount">${entry.value.price}</span>
+                                        </td>
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
-                                                <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                       value="${entry.value.count}"/>
+                                                <input furnId="${entry.value.id}" class="cart-plus-minus-box"
+                                                       type="text" name="qtybutton" value="${entry.value.count}"/>
                                             </div>
                                         </td>
-                                        <td class="product-subtotal">${entry.value.total_price}</td>
+                                        <td class="product-subtotal">${entry.value.totalPrice}</td>
                                         <td class="product-remove">
-                                            <a href="#"><i class="icon-close"></i></a>
+                                            <a class="delItem" href="cartServlet?action=delItem&id=${entry.value.id}"><i
+                                                    class="icon-close"></i></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
-<%--                            <tr>--%>
-<%--                                <td class="product-thumbnail">--%>
-<%--                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/1.jpg"--%>
-<%--                                                     alt=""/></a>--%>
-<%--                                </td>--%>
-<%--                                <td class="product-name"><a href="#">Product Name</a></td>--%>
-<%--                                <td class="product-price-cart"><span class="amount">$60.00</span></td>--%>
-<%--                                <td class="product-quantity">--%>
-<%--                                    <div class="cart-plus-minus">--%>
-<%--                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>--%>
-<%--                                    </div>--%>
-<%--                                </td>--%>
-<%--                                <td class="product-subtotal">$70.00</td>--%>
-<%--                                <td class="product-remove">--%>
-<%--                                    <a href="#"><i class="icon-close"></i></a>--%>
-<%--                                </td>--%>
-<%--                            </tr>--%>
+                            <%--                            <tr>--%>
+                            <%--                                <td class="product-thumbnail">--%>
+                            <%--                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/1.jpg"--%>
+                            <%--                                                     alt=""/></a>--%>
+                            <%--                                </td>--%>
+                            <%--                                <td class="product-name"><a href="#">Product Name</a></td>--%>
+                            <%--                                <td class="product-price-cart"><span class="amount">$60.00</span></td>--%>
+                            <%--                                <td class="product-quantity">--%>
+                            <%--                                    <div class="cart-plus-minus">--%>
+                            <%--                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>--%>
+                            <%--                                    </div>--%>
+                            <%--                                </td>--%>
+                            <%--                                <td class="product-subtotal">$70.00</td>--%>
+                            <%--                                <td class="product-remove">--%>
+                            <%--                                    <a href="#"><i class="icon-close"></i></a>--%>
+                            <%--                                </td>--%>
+                            <%--                            </tr>--%>
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
-                                <h4>共xx件商品 总价 xxxx.xx元</h4>
+                                <h4>共${sessionScope.cart.totalCount}件商品
+                                    总价 ${sessionScope.cart.cartTotalPrice}元</h4>
                                 <div class="cart-shiping-update">
                                     <a href="#">购 物 车 结 账</a>
                                 </div>
                                 <div class="cart-clear">
                                     <button>继 续 购 物</button>
-                                    <a href="#">清 空 购 物 车</a>
+                                    <a class="clearCart" href="cartServlet?action=clear">清 空 购 物 车</a>
                                 </div>
                             </div>
                         </div>

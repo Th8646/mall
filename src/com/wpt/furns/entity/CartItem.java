@@ -20,7 +20,7 @@ public class CartItem {
     private String name; //  家居名
     private BigDecimal price; //  价格
     private Integer count; // 购买数量
-    private BigDecimal total_price;// 总价
+    private BigDecimal totalPrice;// 总价
 
     public CartItem() {
     }
@@ -30,7 +30,7 @@ public class CartItem {
         this.name = name;
         this.price = price;
         this.count = count;
-        this.total_price = total_price;
+        this.totalPrice = totalPrice;
     }
 
     public Integer getId() {
@@ -65,12 +65,12 @@ public class CartItem {
         this.count = count;
     }
 
-    public BigDecimal getTotal_price() {
-        return total_price;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotal_price(BigDecimal total_price) {
-        this.total_price = total_price;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -80,7 +80,8 @@ public class CartItem {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", count=" + count +
-                ", total_price=" + total_price +
+                ", totalPrice=" + totalPrice +
                 '}';
     }
 }
+
